@@ -55,7 +55,7 @@ const SearchInput = styled(InputBase)`
   color: #000;
   background-color: #fff;
   box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.2);
-  padding: 0 2.5rem 0 1rem; // Ajuste o padding para garantir espaço suficiente para o ícone
+  padding: 0 2.5rem 0 1rem; 
   border-radius: 0.5rem;
   width: 100%;
   height: 2rem;
