@@ -2,9 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { IconButton, Card, CardContent, Typography } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
-import PaletteIcon from '@mui/icons-material/Palette';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import ClearIcon from '@mui/icons-material/Clear';
+import FormatColorFillTwoToneIcon from '@mui/icons-material/FormatColorFillTwoTone';
 
 
 const TaskCardContainer = styled(Card)<{ cardColor: string }>`
@@ -110,15 +110,15 @@ const TaskCard: React.FC<{ task: any }> = ({ task }) => {
       <TaskCardFooter>
         <LeftFooterIcons>
           <IconButton onClick={handleEditTask}>
-            <EditIcon />
+            <EditOutlinedIcon />
           </IconButton>
           <IconButton onClick={() => handleChangeColor('#ffcc80')}>
-            <PaletteIcon />
+            <FormatColorFillTwoToneIcon />
           </IconButton>
         </LeftFooterIcons>
         <RightFooterIcons>
           <IconButton onClick={handleDeleteTask}>
-            <DeleteIcon />
+            <ClearIcon />
           </IconButton>
         </RightFooterIcons>
       </TaskCardFooter>
