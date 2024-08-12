@@ -1,18 +1,18 @@
-import React from 'react';
-import styled from 'styled-components';
-import { IconButton, Card, CardContent, Typography } from '@mui/material';
-import StarIcon from '@mui/icons-material/Star';
+import React, { useState } from 'react';
+import { Card, CardContent, IconButton, Typography, Popover, TextField, Button } from '@mui/material';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
-import ClearIcon from '@mui/icons-material/Clear';
 import FormatColorFillTwoToneIcon from '@mui/icons-material/FormatColorFillTwoTone';
+import ClearIcon from '@mui/icons-material/Clear';
+import StarIcon from '@mui/icons-material/Star';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+import styled from 'styled-components';
 
-
-const TaskCardContainer = styled(Card)<{ cardColor: string }>`
+const TaskCardContainer = styled(Card) <{ cardColor: string }>`
   background-color: ${(props) => props.cardColor || 'white'};
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 350px;
-  min-height: 400px; /* Ajuste a altura mínima */
+  min-height: 400px;
   display: flex;
   flex-direction: column;
   padding: 1rem;
@@ -21,7 +21,7 @@ const TaskCardContainer = styled(Card)<{ cardColor: string }>`
   @media (max-width: 768px) {
     max-width: 100%;
     min-height: 30rem;
-    padding: 0.5rem; /* Ajuste o padding em telas menores */
+    padding: 0.5rem;
   }
 `;
 
@@ -32,7 +32,6 @@ const TaskCardHeader = styled.div`
   margin-bottom: 0.5rem;
 
   @media (max-width: 768px) {
-    /* Mantém a mesma linha em telas menores */
     flex-wrap: nowrap;
   }
 `;
@@ -54,7 +53,6 @@ const TaskCardFooter = styled.div`
   margin-top: auto;
 
   @media (max-width: 768px) {
-    /* Mantém os ícones na mesma linha em telas menores */
     flex-wrap: nowrap;
   }
 `;
@@ -73,51 +71,166 @@ const RightFooterIcons = styled.div`
   gap: 0.5rem;
 
   @media (max-width: 768px) {
-    margin-top: 0.5rem; /* Ajusta o espaçamento no rodapé */
+    margin-top: 0.5rem;
   }
 `;
 
-const TaskCard: React.FC<{ task: any }> = ({ task }) => {
-  const [color, setColor] = React.useState(task.color || '');
+const EditButton = styled(Button)`
+  margin-right: 0.5rem;
+`;
 
-  const handleEditTask = () => {
-    // Lógica para editar tarefa
+const ColorPopover = styled(Popover)`
+  padding: 0.5rem;
+`;
+
+const ColorPopoverContent = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 250px;
+  height: 80px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  justify-content: center;
+`;
+
+const ColorOption = styled.div<{ color: string }>`
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: ${(props) => props.color};
+  cursor: pointer;
+  transition: opacity 0.3s;
+
+  &:hover {
+    opacity: 0.8;
+  }
+`;
+
+const colors = [
+  '#ffcc80', '#ffb74d', '#fdd835', '#a5d6a7', '#64b5f6', '#7986cb', 
+  '#ba68c8', '#f48fb1', '#ff8a65', '#dce775', '#ffd54f', '#90a4ae'
+];
+
+interface TaskCardProps {
+  task: any;
+  onEditTask: (task: any) => void;
+  onDeleteTask: (id: number) => void;
+  onChangeColor: (id: number, color: string) => void;
+  onToggleFavorite: (id: number) => void;
+}
+
+const TaskCard: React.FC<TaskCardProps> = ({ task, onEditTask, onDeleteTask, onChangeColor, onToggleFavorite }) => {
+  const [colorPopoverAnchor, setColorPopoverAnchor] = useState<null | HTMLElement>(null);
+  const [color, setColor] = useState(task.color || 'white');
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedTitle, setEditedTitle] = useState(task.title);
+  const [editedDescription, setEditedDescription] = useState(task.description);
+
+  const handleChangeColor = (color: string) => {
+    setColor(color);
+    onChangeColor(task.id, color);
+    setColorPopoverAnchor(null);
   };
 
-  const handleDeleteTask = () => {
-    // Lógica para deletar tarefa
+  const handleEditClick = () => {
+    setIsEditing(true);
   };
 
-  const handleChangeColor = (newColor: string) => {
-    setColor(newColor);
-    // Lógica para salvar a cor no backend
+  const handleSaveClick = () => {
+    onEditTask({ ...task, title: editedTitle, description: editedDescription });
+    setIsEditing(false);
+  };
+
+  const handleCancelClick = () => {
+    setEditedTitle(task.title);
+    setEditedDescription(task.description);
+    setIsEditing(false);
   };
 
   return (
     <TaskCardContainer cardColor={color}>
       <CardContent>
         <TaskCardHeader>
-          <Typography variant="h6">{task.title}</Typography>
-          <IconButton>
-            <StarIcon color={task.favorite ? 'primary' : 'disabled'} />
+          {isEditing ? (
+            <TextField
+              fullWidth
+              variant="outlined"
+              value={editedTitle}
+              onChange={(e) => setEditedTitle(e.target.value)}
+              autoFocus
+            />
+          ) : (
+            <Typography variant="h6">{task.title}</Typography>
+          )}
+          <IconButton onClick={() => onToggleFavorite(task.id)}>
+            {task.favorite ? <StarIcon color="primary" /> : <StarBorderIcon />}
           </IconButton>
         </TaskCardHeader>
         <TaskCardContent>
           <Separator />
-          <Typography variant="body2">{task.description}</Typography>
+          {isEditing ? (
+            <TextField
+              fullWidth
+              multiline
+              variant="outlined"
+              value={editedDescription}
+              onChange={(e) => setEditedDescription(e.target.value)}
+              rows={4}
+            />
+          ) : (
+            <Typography variant="body2">{task.description}</Typography>
+          )}
         </TaskCardContent>
       </CardContent>
       <TaskCardFooter>
         <LeftFooterIcons>
-          <IconButton onClick={handleEditTask}>
-            <EditOutlinedIcon />
-          </IconButton>
-          <IconButton onClick={() => handleChangeColor('#ffcc80')}>
-            <FormatColorFillTwoToneIcon />
-          </IconButton>
+          {isEditing ? (
+            <>
+              <EditButton variant="contained" color="primary" onClick={handleSaveClick}>
+                Salvar
+              </EditButton>
+              <Button variant="outlined" color="secondary" onClick={handleCancelClick}>
+                Cancelar
+              </Button>
+            </>
+          ) : (
+            <>
+              <IconButton onClick={handleEditClick}>
+                <EditOutlinedIcon />
+              </IconButton>
+              <IconButton onClick={(e) => setColorPopoverAnchor(e.currentTarget)}>
+                <FormatColorFillTwoToneIcon />
+              </IconButton>
+              <ColorPopover
+                anchorEl={colorPopoverAnchor}
+                open={Boolean(colorPopoverAnchor)}
+                onClose={() => setColorPopoverAnchor(null)}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}
+              >
+                <ColorPopoverContent>
+                  {colors.map((colorOption) => (
+                    <ColorOption
+                      key={colorOption}
+                      color={colorOption}
+                      onClick={() => handleChangeColor(colorOption)}
+                    />
+                  ))}
+                </ColorPopoverContent>
+              </ColorPopover>
+            </>
+          )}
         </LeftFooterIcons>
         <RightFooterIcons>
-          <IconButton onClick={handleDeleteTask}>
+          <IconButton onClick={() => onDeleteTask(task.id)}>
             <ClearIcon />
           </IconButton>
         </RightFooterIcons>

@@ -4,17 +4,28 @@ import AddTask from './components/AddTask';
 import TaskSection from './components/TaskSection';
 import { GlobalStyle, Container } from './styles/GlobalStyles';
 
-const mockTasks = [
-  { id: 1, title: 'Tarefa 1', description: 'Descrição da tarefa 1', favorite: true, color: '#F28B82' },
-  { id: 2, title: 'Tarefa 2', description: 'Descrição da tarefa 2', favorite: false, color: '#A7FFEB' },
-  { id: 2, title: 'Tarefa 3', description: 'Descrição da tarefa 2', favorite: false, color: '#A7FFEB' },
-  { id: 2, title: 'Tarefa 4', description: 'Descrição da tarefa 2', favorite: false, color: '#A7FFEB' },
-  { id: 3, title: 'Tarefa 5', description: 'Descrição da tarefa 3', favorite: true, color: '#D7AEFB' },
-  { id: 4, title: 'Tarefa 6', description: 'Descrição da tarefa 4', favorite: false, color: '#FFF475' },
-];
-
 const App: React.FC = () => {
-  const [tasks, setTasks] = useState(mockTasks);
+  const [tasks, setTasks] = useState<any[]>([]);
+
+  const addTask = (task: any) => {
+    setTasks([...tasks, task]);
+  };
+
+  const editTask = (updatedTask: any) => {
+    setTasks(tasks.map(task => (task.id === updatedTask.id ? updatedTask : task)));
+  };
+
+  const deleteTask = (id: number) => {
+    setTasks(tasks.filter(task => task.id !== id));
+  };
+
+  const changeTaskColor = (id: number, color: string) => {
+    setTasks(tasks.map(task => (task.id === id ? { ...task, color } : task)));
+  };
+
+  const toggleFavorite = (id: number) => {
+    setTasks(tasks.map(task => (task.id === id ? { ...task, favorite: !task.favorite } : task)));
+  };
 
   const favoriteTasks = tasks.filter(task => task.favorite);
   const otherTasks = tasks.filter(task => !task.favorite);
@@ -24,9 +35,23 @@ const App: React.FC = () => {
       <GlobalStyle />
       <Navbar />
       <Container>
-        <AddTask />
-        <TaskSection title="Favoritas" tasks={favoriteTasks} />
-        <TaskSection title="Outras" tasks={otherTasks} />
+        <AddTask onAddTask={addTask} />
+        <TaskSection 
+          title="Favoritas" 
+          tasks={favoriteTasks} 
+          onEditTask={editTask} 
+          onDeleteTask={deleteTask} 
+          onChangeColor={changeTaskColor} 
+          onToggleFavorite={toggleFavorite}
+        />
+        <TaskSection 
+          title="Outras" 
+          tasks={otherTasks} 
+          onEditTask={editTask} 
+          onDeleteTask={deleteTask} 
+          onChangeColor={changeTaskColor} 
+          onToggleFavorite={toggleFavorite}
+        />
       </Container>
     </>
   );
