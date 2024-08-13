@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { TextField, IconButton, Button, Card, CardContent } from '@mui/material';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
+import { Task } from '../model/task-model';
 
 const AddTaskCard = styled(Card)`
   width: 100%;
@@ -65,7 +66,7 @@ const Divider = styled.hr`
 `;
 
 interface AddTaskProps {
-  onAddTask: (task: any) => void;
+  onAddTask: (task: Task) => void;
 }
 
 const AddTask: React.FC<AddTaskProps> = ({ onAddTask }) => {
@@ -77,7 +78,7 @@ const AddTask: React.FC<AddTaskProps> = ({ onAddTask }) => {
 
   const handleAddTask = () => {
     if (title && description) {
-      const newTask = {
+      const newTask: Task = {
         id: Date.now(),
         title,
         description,
@@ -130,7 +131,7 @@ const AddTask: React.FC<AddTaskProps> = ({ onAddTask }) => {
           variant="contained"
           color="primary"
           onClick={handleAddTask}
-          disabled={!title || !description} 
+          disabled={!title || !description}
         >
           Adicionar Tarefa
         </AddTaskButton>

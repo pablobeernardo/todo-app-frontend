@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { Card, CardContent, IconButton, Typography, Popover, TextField, Button } from '@mui/material';
-import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import { Card, IconButton, Typography, Popover, TextField, Button, CardContent } from '@mui/material';
 import FormatColorFillTwoToneIcon from '@mui/icons-material/FormatColorFillTwoTone';
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import ClearIcon from '@mui/icons-material/Clear';
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import styled from 'styled-components';
+import { Task } from '../model/task-model';
 
 const TaskCardContainer = styled(Card) <{ cardColor: string }>`
-  background-color: ${(props) => props.cardColor || 'white'};
+  background-color: ${(props) => props.cardColor || 'white'} !important;
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 350px;
@@ -109,13 +110,13 @@ const ColorOption = styled.div<{ color: string }>`
 `;
 
 const colors = [
-  '#ffcc80', '#ffb74d', '#fdd835', '#a5d6a7', '#64b5f6', '#7986cb', 
+  '#ffcc80', '#ffb74d', '#fdd835', '#a5d6a7', '#64b5f6', '#7986cb',
   '#ba68c8', '#f48fb1', '#ff8a65', '#dce775', '#ffd54f', '#90a4ae'
 ];
 
 interface TaskCardProps {
-  task: any;
-  onEditTask: (task: any) => void;
+  task: Task;
+  onEditTask: (task: Task) => void;
   onDeleteTask: (id: number) => void;
   onChangeColor: (id: number, color: string) => void;
   onToggleFavorite: (id: number) => void;
@@ -123,23 +124,25 @@ interface TaskCardProps {
 
 const TaskCard: React.FC<TaskCardProps> = ({ task, onEditTask, onDeleteTask, onChangeColor, onToggleFavorite }) => {
   const [colorPopoverAnchor, setColorPopoverAnchor] = useState<null | HTMLElement>(null);
-  const [color, setColor] = useState(task.color || 'white');
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState(task.title);
   const [editedDescription, setEditedDescription] = useState(task.description);
 
-  const handleChangeColor = (color: string) => {
-    setColor(color);
-    onChangeColor(task.id, color);
+  const handleCloseColorPopover = () => {
     setColorPopoverAnchor(null);
   };
 
-  const handleEditClick = () => {
-    setIsEditing(true);
+  const handleChangeColor = (color: string) => {
+    onChangeColor(task.id, color);
+    handleCloseColorPopover();
   };
 
   const handleSaveClick = () => {
-    onEditTask({ ...task, title: editedTitle, description: editedDescription });
+    onEditTask({
+      ...task,
+      title: editedTitle,
+      description: editedDescription,
+    });
     setIsEditing(false);
   };
 
@@ -149,8 +152,12 @@ const TaskCard: React.FC<TaskCardProps> = ({ task, onEditTask, onDeleteTask, onC
     setIsEditing(false);
   };
 
+  const handleEditClick = () => {
+    setIsEditing(true);
+  };
+
   return (
-    <TaskCardContainer cardColor={color}>
+    <TaskCardContainer cardColor={task.color}>
       <CardContent>
         <TaskCardHeader>
           {isEditing ? (
