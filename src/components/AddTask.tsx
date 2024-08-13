@@ -1,69 +1,9 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
-import { TextField, IconButton, Button, Card, CardContent } from '@mui/material';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import StarIcon from '@mui/icons-material/Star';
 import { Task } from '../model/task-model';
-
-const AddTaskCard = styled(Card)`
-  width: 100%;
-  max-width: 500px;
-  margin: 20px auto;
-  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.2);
-  border-radius: 1rem;
-  background-color: #fff;
-  @media (max-width: 600px) {
-    max-width: 90%;
-  }
-`;
-
-const AddTaskContainer = styled(CardContent)`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const TitleContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  margin-bottom: 16px;
-`;
-
-const AddTaskButton = styled(Button)`
-  margin-top: 16px;
-`;
-
-const EditableTextField = styled(TextField)`
-  margin-bottom: 16px;
-  width: 100%;
-  background-color: #fff;
-  border-radius: 8px;
-  & .MuiOutlinedInput-root {
-    border-radius: 8px;
-    fieldset {
-      border: none;
-    }
-    &:hover fieldset {
-      border: none;
-    }
-    &.Mui-focused fieldset {
-      border: none;
-    }
-  }
-`;
-
-const TitleField = styled(EditableTextField)`
-  margin-bottom: 24px;
-`;
-
-const Divider = styled.hr`
-  width: 100%;
-  border: none;
-  border-top: 1px solid #ccc;
-  margin: 24px 0;
-`;
+import { IconButton, Divider } from '@mui/material';
+import { AddTaskCard, AddTaskContainer, TitleContainer, TitleField, EditableTextField, AddTaskButton } from '../styles/style';
 
 interface AddTaskProps {
   onAddTask: (task: Task) => void;

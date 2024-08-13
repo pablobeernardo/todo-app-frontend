@@ -1,7 +1,6 @@
 import React from 'react';
 import TaskCard from './TaskCard';
-import styled from 'styled-components';
-import { Typography } from '@mui/material';
+import { SectionContainer, SectionTitle, TaskList } from '../styles/style';
 
 interface Task {
   id: number;
@@ -20,27 +19,6 @@ interface TaskSectionProps {
   onToggleFavorite: (id: number) => void;
 }
 
-const SectionContainer = styled.div`
-  margin: 32px 0;
-  padding: 0 16px; 
-`;
-
-const SectionTitle = styled(Typography)`
-  margin-bottom: 16px;
-  font-size: 1.5rem; 
-  font-weight: 500; 
-`;
-
-const TaskList = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: flex-start; 
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: center;
-`;
 
 const TaskSection: React.FC<TaskSectionProps> = ({ title, tasks, onEditTask, onDeleteTask, onChangeColor, onToggleFavorite }) => {
   return (
@@ -48,9 +26,9 @@ const TaskSection: React.FC<TaskSectionProps> = ({ title, tasks, onEditTask, onD
       <SectionTitle>{title}</SectionTitle>
       <TaskList>
         {tasks.map(task => (
-          <TaskCard 
-            key={task.id} 
-            task={task} 
+          <TaskCard
+            key={task.id}
+            task={task}
             onEditTask={onEditTask}
             onDeleteTask={onDeleteTask}
             onChangeColor={onChangeColor}

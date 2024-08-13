@@ -4,7 +4,6 @@ export interface Task {
     description: string;
     favorite: boolean;
     color: string;
-  }
-  
-  export type TaskUpdate = Partial<Omit<Task, 'id'>>; 
-  
+}
+
+export type TaskUpdate = Partial<Omit<Task, 'id'>>;

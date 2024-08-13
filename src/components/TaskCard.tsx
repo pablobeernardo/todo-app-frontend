@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, IconButton, Typography, Popover, TextField, Button, CardContent } from '@mui/material';
+import { Card, IconButton, Typography, TextField, Button, CardContent } from '@mui/material';
 import FormatColorFillTwoToneIcon from '@mui/icons-material/FormatColorFillTwoTone';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import ClearIcon from '@mui/icons-material/Clear';
@@ -7,6 +7,7 @@ import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import styled from 'styled-components';
 import { Task } from '../model/task-model';
+import { TaskCardHeader, TaskCardContent, Separator, TaskCardFooter, LeftFooterIcons, EditButton, ColorPopover, ColorPopoverContent, RightFooterIcons } from '../styles/style';
 
 const TaskCardContainer = styled(Card) <{ cardColor: string }>`
   background-color: ${(props) => props.cardColor || 'white'} !important;
@@ -24,76 +25,6 @@ const TaskCardContainer = styled(Card) <{ cardColor: string }>`
     min-height: 30rem;
     padding: 0.5rem;
   }
-`;
-
-const TaskCardHeader = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.5rem;
-
-  @media (max-width: 768px) {
-    flex-wrap: nowrap;
-  }
-`;
-
-const Separator = styled.hr`
-  border: none;
-  border-top: 1px solid #ddd;
-  margin: 1rem 0;
-`;
-
-const TaskCardContent = styled.div`
-  flex: 1;
-`;
-
-const TaskCardFooter = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: auto;
-
-  @media (max-width: 768px) {
-    flex-wrap: nowrap;
-  }
-`;
-
-const LeftFooterIcons = styled.div`
-  display: flex;
-  gap: 0.5rem;
-
-  @media (max-width: 768px) {
-    margin-bottom: 0.5rem;
-  }
-`;
-
-const RightFooterIcons = styled.div`
-  display: flex;
-  gap: 0.5rem;
-
-  @media (max-width: 768px) {
-    margin-top: 0.5rem;
-  }
-`;
-
-const EditButton = styled(Button)`
-  margin-right: 0.5rem;
-`;
-
-const ColorPopover = styled(Popover)`
-  padding: 0.5rem;
-`;
-
-const ColorPopoverContent = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  width: 250px;
-  height: 80px;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
-  justify-content: center;
 `;
 
 const ColorOption = styled.div<{ color: string }>`

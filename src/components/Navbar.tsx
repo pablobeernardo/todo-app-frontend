@@ -1,55 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { AppBar, Toolbar, Typography, IconButton, InputBase } from '@mui/material';
+import { Typography, IconButton, InputBase } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import CloseIcon from '@mui/icons-material/Close';
+import { NavbarContainer, ToolbarContainer, LogoContainer, LogoImage, SearchContainer } from '../styles/style';
 
-const NavbarContainer = styled(AppBar)`
-  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
-`;
-
-const ToolbarContainer = styled(Toolbar)`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 1rem;
-
-  @media (max-width: 37.5rem) { // 600px
-    padding: 0 0.5rem;
-  }
-`;
-
-const LogoContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  width:100%;
-
-  @media (max-width: 37.5rem) { // 600px
-    gap: 0.5rem;
-  }
-`;
-
-const LogoImage = styled.img`
-  height: 2rem;
-
-  @media (max-width: 37.5rem) { // 600px
-    height: 1.5rem;
-  }
-`;
-
-const SearchContainer = styled.div`
-  display: flex;
-  align-items: center;
-  position: relative;
-  max-width: 30rem;
-  flex: 1;
-  margin: 0 1rem;
-
-  @media (max-width: 37.5rem) { // 600px
-    margin: 0 0.5rem;
-  }
-`;
 
 const SearchInput = styled(InputBase)`
   color: #000;
